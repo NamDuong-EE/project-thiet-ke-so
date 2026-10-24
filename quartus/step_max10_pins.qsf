@@ -1,0 +1,49 @@
+# Source: docs/STEP-MAX10 Schematic.pdf, STEP-MAX10 V2.0, pages 3-4.
+# LED net order follows the schematic, which differs from Lab2 page 19.
+# LED/RGB active low; segments active high; digit commons active low.
+set_location_assignment PIN_J5 -to clk_12mhz
+set_location_assignment PIN_J12 -to {sw[0]}
+set_location_assignment PIN_H11 -to {sw[1]}
+set_location_assignment PIN_H12 -to {sw[2]}
+set_location_assignment PIN_H13 -to {sw[3]}
+set_location_assignment PIN_J9 -to {key[0]}
+set_location_assignment PIN_K14 -to {key[1]}
+set_location_assignment PIN_J11 -to {key[2]}
+set_location_assignment PIN_J14 -to {key[3]}
+set_location_assignment PIN_M12 -to {led[0]}
+set_location_assignment PIN_N15 -to {led[1]}
+set_location_assignment PIN_L11 -to {led[2]}
+set_location_assignment PIN_N14 -to {led[3]}
+set_location_assignment PIN_K11 -to {led[4]}
+set_location_assignment PIN_M14 -to {led[5]}
+set_location_assignment PIN_K12 -to {led[6]}
+set_location_assignment PIN_L15 -to {led[7]}
+# rgb1/rgb2 follow R/G/B-LED1/2 net names on schematic page 3.
+# The page-4 component designators LED1 and LED2 use the opposite net groups.
+set_location_assignment PIN_G15 -to {rgb1[2]}
+set_location_assignment PIN_E15 -to {rgb1[1]}
+set_location_assignment PIN_E14 -to {rgb1[0]}
+set_location_assignment PIN_C15 -to {rgb2[2]}
+set_location_assignment PIN_C14 -to {rgb2[1]}
+set_location_assignment PIN_D12 -to {rgb2[0]}
+# Display 1 = tens. Segment vector is {a,b,c,d,e,f,g}.
+set_location_assignment PIN_E1 -to {seg_tens[6]}
+set_location_assignment PIN_D2 -to {seg_tens[5]}
+set_location_assignment PIN_K2 -to {seg_tens[4]}
+set_location_assignment PIN_J2 -to {seg_tens[3]}
+set_location_assignment PIN_G2 -to {seg_tens[2]}
+set_location_assignment PIN_F5 -to {seg_tens[1]}
+set_location_assignment PIN_G5 -to {seg_tens[0]}
+set_location_assignment PIN_L1 -to dp_tens
+set_location_assignment PIN_E2 -to digit_tens
+# Display 2 = ones.
+set_location_assignment PIN_A3 -to {seg_ones[6]}
+set_location_assignment PIN_A2 -to {seg_ones[5]}
+set_location_assignment PIN_P2 -to {seg_ones[4]}
+set_location_assignment PIN_P1 -to {seg_ones[3]}
+set_location_assignment PIN_N1 -to {seg_ones[2]}
+set_location_assignment PIN_C1 -to {seg_ones[1]}
+set_location_assignment PIN_C2 -to {seg_ones[0]}
+set_location_assignment PIN_R2 -to dp_ones
+set_location_assignment PIN_B1 -to digit_ones
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to *
