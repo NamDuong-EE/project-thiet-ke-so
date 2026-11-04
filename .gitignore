@@ -1,11 +1,13 @@
 build/
 .tools/
-quartus/db/
-quartus/incremental_db/
-quartus/output_files/
-quartus/*.qws
-quartus/*.qdf
-quartus/*.bak
+**/quartus/db/
+**/quartus/incremental_db/
+**/quartus/output_files/
+**/quartus/simulation/
+**/quartus/*_nativelink_simulation.rpt
+**/quartus/*.qws
+**/quartus/*.qdf
+**/quartus/*.bak
 transcript
 vsim.wlf
 

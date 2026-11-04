@@ -1,4 +1,4 @@
-# Run from the ModelSim Transcript: do <absolute-project-path>/sim/wave.do
+# Run from the ModelSim Transcript: source {<absolute-project-path>/sim/wave.do}
 set root [file normalize [file join [file dirname [info script]] ..]]
 set build [file join $root build sim gui]
 file mkdir $build

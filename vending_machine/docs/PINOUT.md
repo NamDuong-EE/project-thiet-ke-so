@@ -1,8 +1,11 @@
-# Gán chân STEP-MAX10 theo schematic
+# Gán chân STEP-MAX10 theo nhãn trên board
 
 Nguồn: `STEP-MAX10 Schematic.pdf`, revision V2.0, trang 3 (FPGA) và trang 4
-(LED, nút, switch, LED 7 đoạn). Ký hiệu chip trong schematic là
-`MAX10M08SCM153C7G`; tên Device trong Quartus là **10M08SCM153C7G**.
+(LED, nút, switch, LED 7 đoạn). Thứ tự LED thường dùng bảng Lab2 trang 19;
+thứ tự RGB theo nhãn trong ảnh board người dùng. Schematic dùng tên net khác
+số in trên board, nên không dùng tên net schematic làm số LED vật lý.
+Ký hiệu chip trong schematic là `MAX10M08SCM153C7G`, nhưng project hiện đã được
+người dùng chọn **10M02SCM153I7G**; cấu hình này được giữ nguyên.
 
 File `quartus/step_max10_pins.qsf` đã chứa toàn bộ assignment bên dưới và được
 `quartus/vending_machine.qsf` nạp bằng `source`. Không cần gán lại từng chân.
@@ -11,7 +14,7 @@ Tên trong cột Cổng RTL phải khớp chính xác module top `vending_top`.
 ## Xem chân trong Quartus
 
 1. Nếu project đang mở, đóng rồi mở lại `quartus/vending_machine.qpf` để đọc cấu hình mới.
-2. Vào **Assignments → Device**, kiểm tra **10M08SCM153C7G** nếu board đúng schematic này.
+2. Vào **Assignments → Device**, giữ mã chip đúng board; project hiện đặt **10M02SCM153I7G**.
 3. Chạy **Processing → Start → Start Analysis & Elaboration** để nhận các cổng top.
 4. Vào **Assignments → Pin Planner**, kiểm tra cột **Location** và **I/O Standard**.
 5. Tất cả I/O trong bảng dùng **3.3-V LVTTL**. Chạy **Start Compilation** để tạo `.sof`.
@@ -38,20 +41,21 @@ Switch có điện trở kéo xuống; đóng công tắc nối 3.3 V, nên ON t
 
 ## LED thường
 
-| Cổng RTL | Net schematic | Location | Chức năng |
+| Cổng RTL | LED vật lý trên board | Location | Chức năng |
 |---|---|---|---|
-| `led[0]` | LED1 | M12 | Sản phẩm A / bit 0 mã lỗi |
-| `led[1]` | LED2 | N15 | Sản phẩm B / bit 1 mã lỗi |
-| `led[2]` | LED3 | L11 | Sản phẩm C / bit 2 mã lỗi |
-| `led[3]` | LED4 | N14 | Sẵn sàng |
-| `led[4]` | LED5 | K11 | Đang nhả hàng |
-| `led[5]` | LED6 | M14 | Đang hoàn tiền |
-| `led[6]` | LED7 | K12 | Lỗi |
-| `led[7]` | LED8 | L15 | Bận |
+| `led[0]` | LED1 | N15 | Sản phẩm A / bit 0 mã lỗi |
+| `led[1]` | LED2 | N14 | Sản phẩm B / bit 1 mã lỗi |
+| `led[2]` | LED3 | M14 | Sản phẩm C / bit 2 mã lỗi |
+| `led[3]` | LED4 | M12 | Sẵn sàng |
+| `led[4]` | LED5 | L15 | Đang nhả hàng |
+| `led[5]` | LED6 | K12 | Đang hoàn tiền |
+| `led[6]` | LED7 | L11 | Lỗi |
+| `led[7]` | LED8 | K11 | Bận |
 
 Trang 4 nối anode LED qua điện trở đến 3.3 V, cathode đến FPGA: xuất **0 để sáng**,
-**1 để tắt**. Vì vậy `LED_ACTIVE_LOW=1`. Thứ tự LED ở đây khác bảng Lab2 trang 19;
-cấu hình mới ưu tiên schematic bạn cung cấp.
+**1 để tắt**. Vì vậy `LED_ACTIVE_LOW=1`. Thứ tự trên khớp bảng Lab2 trang 19.
+Trước khi sửa, `led[3]` gán N14 khiến LED vật lý số 2 sáng khi sẵn sàng.
+Sau khi sửa, `led[3]` gán M12 để LED vật lý số 4 sáng đúng bảng chức năng.
 
 ## LED RGB
 
@@ -59,20 +63,20 @@ Vector dùng thứ tự `{red, green, blue}`.
 
 | Cổng RTL | Net schematic | Location |
 |---|---|---|
-| `rgb1[2]` | R-LED1 | G15 |
-| `rgb1[1]` | G-LED1 | E15 |
-| `rgb1[0]` | B-LED1 | E14 |
-| `rgb2[2]` | R-LED2 | C15 |
-| `rgb2[1]` | G-LED2 | C14 |
-| `rgb2[0]` | B-LED2 | D12 |
+| `rgb1[2]` | R-LED2 | C15 |
+| `rgb1[1]` | G-LED2 | C14 |
+| `rgb1[0]` | B-LED2 | D12 |
+| `rgb2[2]` | R-LED1 | G15 |
+| `rgb2[1]` | G-LED1 | E15 |
+| `rgb2[0]` | B-LED1 | E14 |
 
 RGB có common anode nối 3.3 V, nên `RGB_ACTIVE_LOW=1`. Ví dụ xanh lá:
 giá trị điện ở chân `{R,G,B}=101`; tắt hoàn toàn là `111`.
 
 Schematic có điểm dễ nhầm: ở trang 4, ký hiệu linh kiện **LED1** dùng nhóm net
 `R/G/B-LED2`, còn linh kiện **LED2** dùng nhóm net `R/G/B-LED1`.
-Code `rgb1/rgb2` theo **tên net FPGA ở trang 3**, không theo số designator linh kiện
-ở trang 4. Vì vậy vị trí vật lý hai đèn có thể trông đảo thứ tự so với tên cổng RTL.
+Code `rgb1/rgb2` hiện theo **nhãn RGB1/RGB2 trong ảnh board**, tương ứng designator
+ở trang 4. Vì vậy RGB1 báo trạng thái máy và RGB2 báo lựa chọn sản phẩm, đúng README.
 
 ## LED 7 đoạn
 
@@ -108,5 +112,6 @@ parameter bit LED_ACTIVE_LOW   = 1'b1;
 parameter bit RGB_ACTIVE_LOW   = 1'b1;
 ```
 
-Sau khi nạp, bấm KEY4: màn hình `00`, LED sẵn sàng sáng. Đó là phép thử nhanh
+Sau khi nạp **file .sof mới**, bấm KEY4: màn hình `00`, **LED4** sẵn sàng sáng.
+Với SW1=SW2=OFF, RGB1 xanh dương và RGB2 đỏ. Đó là phép thử nhanh
 để kiểm tra clock, reset, cực tính và hai nhóm LED 7 đoạn trên phần cứng.

@@ -1,6 +1,24 @@
 # Kết quả kiểm chứng
 
-Ngày kiểm tra: **22/10/2026**.
+Kiểm tra gần nhất: **02/11/2026**. Các mục lịch sử bên dưới ghi lần kiểm tra 22/10/2026.
+
+## Sửa số LED để khớp nhãn board — 02/11/2026
+
+- Ảnh board cho thấy trạng thái chờ sáng LED vật lý số 2, trong khi README yêu cầu LED4.
+  Nguyên nhân là tín hiệu `led[3]` gán N14 theo tên net schematic.
+- Đã sửa LED1–8 theo bảng Lab2 trang 19; **`led[3]` hiện gán M12 (LED4 vật lý)**.
+- Đã đổi hai nhóm RGB theo nhãn trong ảnh để RGB1 báo trạng thái, RGB2 báo sản phẩm.
+- Đã bỏ 14 assignment LED/RGB cũ bị lặp trong QSF chính, để không ghi đè file include mới.
+- Giữ nguyên Device **10M02SCM153I7G**, nhiệt độ và cấu hình ModelSim do người dùng đã chọn.
+- Full compile Quartus: **Successful, 0 errors, 12 warnings**. Fitter báo 346 logic elements,
+  126 registers; setup slack thấp nhất +71.929 ns, hold slack thấp nhất +0.146 ns.
+- Đã đọc bảng pin sau fitter: `led[3]: M12`, RGB1 dùng C15/C14/D12,
+  RGB2 dùng G15/E15/E14. File `quartus/output_files/vending_machine.sof` đã tạo lại cho chip 10M02.
+
+Không sửa RTL giao dịch trong lần này; kiểm chứng thay đổi gán chân bằng full compile
+và bảng pin thực tế sau fitter. Cần **nạp lại .sof mới** rồi bấm KEY4 để kiểm tra:
+`00`, LED4 sáng; với SW1=SW2=OFF, RGB1 xanh dương và RGB2 đỏ.
+Chưa tự nạp FPGA hay xác nhận kết quả sau nạp trên board thật.
 
 ## Mở project Quartus
 
